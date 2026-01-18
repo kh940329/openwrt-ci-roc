@@ -1,4 +1,4 @@
-name: RAX3000M-ImmortalWrt
+name: MT798X-ImmortalWrt
 
 on:
   workflow_dispatch:
@@ -9,13 +9,13 @@ on:
 env:
   REPO_URL: https://github.com/laipeng668/immortalwrt.git
   REPO_BRANCH: 25.12-mtk
-  CONFIG_FILE: configs/RAX3000M.config
+  CONFIG_FILE: configs/MT798X.config
   GENERAL_CONFIG_FILE: configs/General.config
   DIY_SCRIPT: scripts/Roc-script.sh
   CLASH_KERNEL: amd64
   UPLOAD_BIN_DIR: false
   FIRMWARE_RELEASE: true
-  FIRMWARE_TAG: RAX3000M&K2P
+  FIRMWARE_TAG: MT798X
   TZ: Asia/Shanghai
 
 jobs:
@@ -143,11 +143,11 @@ jobs:
       if: steps.compile.outputs.status == 'success'
       run: |
         cd $OPENWRT_PATH/bin/targets/*/*
-        cp $OPENWRT_PATH/.config RAX3000M.config
-        mv config.buildinfo RAX3000M.config.buildinfo
-        mv immortalwrt-mediatek-filogic.manifest RAX3000M.manifest
+        cp $OPENWRT_PATH/.config MT798X.config
+        mv config.buildinfo MT798X.config.buildinfo
+        mv immortalwrt-mediatek-filogic.manifest MT798X.manifest
         mv -f $OPENWRT_PATH/bin/packages/*/*/*.apk packages
-        tar -zcf RAX3000M.Packages.tar.gz packages
+        tar -zcf MT798X.Packages.tar.gz packages
         rm -rf packages feeds.buildinfo version.buildinfo sha256sums profiles.json *-bl2.bin
         echo "FIRMWARE_PATH=$PWD" >> $GITHUB_ENV
 
@@ -170,7 +170,7 @@ jobs:
         body: |
           **This is OpenWrt Firmware for ${{ env.FIRMWARE_TAG }}**
           ### 📒 固件信息
-          - 这是CMCC RAX3000M NAND/EMMC version (custom U-Boot layout)&K2P的6.12内核固件，默认主题为Aurora；该固件在ImmortalWrt的基础上，添加了额外的软件包ddns、ttyd、upnp、wolplus、samba4、vlmcsd、aria2、autoreboot、uhttpd、wifischedule、frps、frpc、diskman、hd-idle、banip、acme、arpbind、usb-printer、passwall、fileassistant、oaf、sqm、wireguard、watchcat、wechatpush、3cat、smartdns（**K2P**仅包含ttyd、autoreboot、uhttpd、wifischedule），并添加了若干工具，具体详见对应机型的config（RAX3000M包含General.config）。
+          - 这是custom U-Boot layout的6.12内核固件，默认主题为Aurora；该固件在ImmortalWrt的基础上，添加了额外的软件包ddns、ttyd、upnp、wolplus、samba4、vlmcsd、aria2、autoreboot、uhttpd、wifischedule、frps、frpc、diskman、hd-idle、banip、acme、arpbind、usb-printer、passwall、oaf、sqm、wireguard、watchcat、wechatpush、3cat、smartdns（**K2P**仅包含ttyd、autoreboot、uhttpd、wifischedule），并添加了若干工具，具体详见对应机型的config（MT798X.config和General.config）。
           - 💻 这是 ${{ env.FIRMWARE_TAG }} 平台使用的 OpenWrt 固件
           - ⚽ 固件源码: ${{ env.REPO_URL }}
           - 💝 源码分支: ${{ env.REPO_BRANCH }}
